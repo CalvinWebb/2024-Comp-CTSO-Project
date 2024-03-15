@@ -109,8 +109,8 @@ class main():
                     bd=0, borderwidth=0)
         menubar.add_cascade(menu=file, label="File")
         file.add_command(label="New Comment File", command=self.newFile)
-        file.add_command(label="New Meeting File", command=self.newFile)
-        file.add_command(label="New Company Information File", command=self.newFile)
+        file.add_command(label="New Meeting File", command=self.newMeetingFile)
+        file.add_command(label="New Company Information File", command=self.newCompanyFile)
         file.add_command(label="Save File", command=self.saveFile)
         file.add_command(label="Open Directory", command=self.open)
         file.add_command(label="Exit", command=self.quit)
@@ -119,15 +119,16 @@ class main():
         window = Menu(menubar, bg=darker_grey, fg="white", activebackground=light_purple, activeforeground=darker_grey,
                       bd=0)
         menubar.add_cascade(menu=window, label="Window")
-        window.add_command(label="Help", command=self.open_popup)
         window.add_command(label="Search Current Directory", command=self.open_search_window)
         #window.add_command(label="Time Line")
 
         # setting menu
         setting = Menu(menubar, bg=darker_grey, fg="white", activebackground=light_purple, activeforeground=darker_grey,
                        bd=0)
-        menubar.add_cascade(menu=setting, label="Setting")
-        setting.add_command(label="Preferences")
+        menubar.add_cascade(menu=setting, label="Help")
+        setting.add_command(label="Getting Started", command=self.open_popup)
+        setting.add_command(label="Q&A", command=self.open_qa)
+        setting.add_command(label="Instructions", command=self.open_inst)
 
         if width == root.winfo_width():
             print("yes")
@@ -240,12 +241,36 @@ class main():
     def newCompanyFile(self):
         newFile = filedialog.asksaveasfile(filetypes=(("text document", "*.txt"),))
         main.setDir(savePath, None, 0)
-        print(newFile)
+        # Lines to add
+        new_lines = [
+            "Company Name:",
+            "Type of Company:",
+            "Resources:",
+            "Contact Info:"
+        ]
+
+        # Open the file in append mode and add the new lines
+        with open(newFile.name, 'a') as file:
+            # Writing each line
+            for line in new_lines:
+                file.write(line + '\n')  # Add a newline character at the end of each line
 
     def newMeetingFile(self):
         newFile = filedialog.asksaveasfile(filetypes=(("text document", "*.txt"),))
         main.setDir(savePath, None, 0)
-        print(newFile)
+        # Lines to add
+        new_lines = [
+            "Meeting Name:",
+            "Type of Meeting:",
+            "Meeting Time:",
+            "Connection Info:"
+        ]
+
+        # Open the file in append mode and add the new lines
+        with open(newFile.name, 'a') as file:
+            # Writing each line
+            for line in new_lines:
+                file.write(line + '\n')  # Add a newline character at the end of each line
 
     def searchDir(self):
         for subdir, dirs, files in os.walk(savePath):
@@ -327,6 +352,96 @@ class main():
         # Add interactive button
         btn_open = Button(top, text="Open Directory", command=self.open_and_close, bg='#55555a', fg='white', relief=FLAT)
         btn_open.pack(pady=20)
+
+
+    def open_qa(self):
+        global q
+        q = Toplevel(root)
+        q.geometry("600x325")
+        q.resizable(False, False)
+        q.grab_set()
+        q.focus_set()
+        q.title("Help Menu")
+        Label(q, text="Hello World!", font=('Mistral 18 bold')).place(x=150, y=80)
+
+        q.config(bg='#55555a')
+
+        # Create a frame with gray background color
+        info_frame = Frame(q, bg='#55555a')
+        info_frame.pack(expand=True, fill='both', padx=20, pady=20)
+
+        # Add information labels (using Lorem Ipsum)
+        label1 = Label(info_frame, text="AUCTO Q&A/FAQ", fg='white',
+                          bg='#55555a',  font=("Helvetica", 14, "bold"))
+        label1.pack(pady=5)
+        label2 = Label(info_frame, text="Q: How do I open a file?",
+                          fg='white', bg='#55555a')
+        label2.pack(pady=5)
+        label3 = Label(info_frame,
+                          text="Once you opened a directory, double click one of your files to open it in the editing area.",
+                          fg='white', bg='#55555a')
+        label3.pack(pady=5)
+        label4 = Label(info_frame,
+                          text="Q: How do I open a directory in the program?",
+                          fg='white', bg='#55555a')
+        label4.pack(pady=5)
+        label5 = Label(info_frame,
+                          text="If you don't have a directory open you can use the 'File' menu to open\n a directory, or you can press 'Getting Started' in the Help menu.",
+                          fg='white', bg='#55555a')
+        label5.pack(pady=5)
+        label6 = Label(info_frame,
+                       text="Q: How do I search my information?",
+                       fg='white', bg='#55555a')
+        label6.pack(pady=5)
+        label7 = Label(info_frame,
+                       text="To search through all of the files in your current directory, you can use\n the 'Search Current Directory' command under the Window menu.",
+                       fg='white', bg='#55555a')
+        label7.pack(pady=5)
+
+
+    def open_inst(self):
+        global instruct
+        instruct = Toplevel(root)
+        instruct.geometry("600x325")
+        instruct.resizable(False, False)
+        instruct.grab_set()
+        instruct.focus_set()
+        instruct.title("Help Menu")
+        Label(instruct, text="Hello World!", font=('Mistral 18 bold')).place(x=150, y=80)
+
+        instruct.config(bg='#55555a')
+
+        # Create a frame with gray background color
+        info_frame = Frame(instruct, bg='#55555a')
+        info_frame.pack(expand=True, fill='both', padx=20, pady=20)
+
+        # Add information labels (using Lorem Ipsum)
+        label1 = Label(info_frame, text="AUCTO Step by Step Instructions", fg='white',
+                          bg='#55555a',  font=("Helvetica", 14, "bold"))
+        label1.pack(pady=5)
+        label2 = Label(info_frame, text="Step 1: Opening a Directory",
+                          fg='white', bg='#55555a')
+        label2.pack(pady=5)
+        label3 = Label(info_frame,
+                          text="In order to open a directory, you can either use the 'Open Directory' function\n in the File menu, or you can press 'Getting Started' in the Help menu.",
+                          fg='white', bg='#55555a')
+        label3.pack(pady=5)
+        label4 = Label(info_frame,
+                          text="Step 2: Making a New File",
+                          fg='white', bg='#55555a')
+        label4.pack(pady=5)
+        label5 = Label(info_frame,
+                          text="If you don't already have a file to edit, you can use the File menu\n to make a new file of the 3 different types avaliable.",
+                          fg='white', bg='#55555a')
+        label5.pack(pady=5)
+        label6 = Label(info_frame,
+                       text="Step 3: Editing Your Information",
+                       fg='white', bg='#55555a')
+        label6.pack(pady=5)
+        label7 = Label(info_frame,
+                       text="In order to edit your information, navigate through the tree system on\n the left side of the screen and double click on a file of your choosing.",
+                       fg='white', bg='#55555a')
+        label7.pack(pady=5)
 
     def open_and_close(self):
         # Run self.open()
